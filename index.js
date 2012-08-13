@@ -81,11 +81,13 @@ EveryPaaS.prototype.getMongodbUrl = function() {
       return this.herokuEnvironment.MONGOLAB_URL
     if (this.herokuEnvironment.MONGOHQ_URL)
       return this.herokuEnvironment.MONGOHQ_URL
+    return null
   }
 
   if (this.isStrider()) {
     if (this.striderEnvironment.MONGODB_URL)
       return this.striderEnvironment.MONGODB_URL
+    return null
   }
 
   return null
@@ -108,6 +110,7 @@ EveryPaaS.prototype.getMysqlUrl = function() {
   if (this.isStrider()) {
     if (this.striderEnvironment.MYSQL_URL)
       return this.striderEnvironment.MYSQL_URL
+    return null
   }
 
   return null
