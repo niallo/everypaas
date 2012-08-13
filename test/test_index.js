@@ -33,6 +33,7 @@ describe("everypaas", function() {
 
   describe("#isDotCloud", function() {
 
+    // Reset dotCloud cache
     beforeEach(function() {
       everypaas.dotCloudEnvironment = undefined
     })
@@ -62,6 +63,7 @@ describe("everypaas", function() {
 
   describe("#detect", function() {
 
+    // Reset dotCloud cache
     beforeEach(function() {
       everypaas.dotCloudEnvironment = undefined
     })
@@ -92,8 +94,95 @@ describe("everypaas", function() {
 
   })
 
+  describe("#getMongodbUrl", function() {
+
+    describe("#on dotCloud", function() {
+      // Reset dotCloud cache
+      beforeEach(function() {
+        everypaas.dotCloudEnvironment = undefined
+      })
+
+      it("should return correct URL", function() {
+        everypaas.detect({}, path.join(__dirname, 'dotcloud-env-good.json'))
+        // Set a valid MongoDB service named "db"
+        var url = "mongodb://valid/"
+        everypaas.dotCloudEnvironment.DOTCLOUD_DB_MONGODB_URL = url
+        expect(everypaas.getMongodbUrl()).to.eql(url)
+        // now unset and set another service named "data"
+        delete everypaas.dotCloudEnvironment['DOTCLOUD_DB_MONGODB_URL']
+        everypaas.dotCloudEnvironment.DOTCLOUD_DATA_MONGODB_URL = url
+        expect(everypaas.getMongodbUrl()).to.eql(url)
+
+      })
+      it("should fail when service not configured", function() {
+        // no MongoDB service
+        everypaas.detect({}, path.join(__dirname, 'dotcloud-env-good.json'))
+        expect(everypaas.getMongodbUrl()).to.not.exist;
+      })
+
+      after(function() {
+        delete everypaas.dotCloudEnvironment
+      })
+
+    })
+    describe("#on Heroku", function() {
+      it("should return correct URL for MongoLab", function() {
+        var url = "mongodb://valid/"
+        everypaas.detect({PORT:123, "MONGOLAB_URL":url})
+        expect(everypaas.paas).to.eql(everypaas.HEROKU)
+        expect(everypaas.getMongodbUrl()).to.eql(url)
+      })
+      it("should return correct URL for MongoHQ", function() {
+        var url = "mongodb://valid/"
+        everypaas.detect({PORT:123, "MONGOHQ_URL":url})
+        expect(everypaas.paas).to.eql(everypaas.HEROKU)
+        expect(everypaas.getMongodbUrl()).to.eql(url)
+      })
+      it("should fail when service not configured", function() {
+        // no MongoDB service
+        everypaas.detect({PORT:123, "NONE":"foo"})
+        expect(everypaas.getMongodbUrl()).to.not.exist;
+      })
+
+    })
+
+    describe("#on Strider", function() {
+      it("should return correct URL for MongoDB", function() {
+        var url = "mongodb://valid/"
+        everypaas.detect({PAAS_NAME:"strider", "MONGODB_URL":url})
+        expect(everypaas.paas).to.eql(everypaas.STRIDER)
+        expect(everypaas.getMongodbUrl()).to.eql(url)
+      })
+
+      it("should fail when service not configured", function() {
+        // no MongoDB service
+        everypaas.detect({PAAS_NAME:"strider", "NONE":"foo"})
+        expect(everypaas.getMongodbUrl()).to.not.exist;
+      })
+
+    })
 
 
+  })
+
+  describe("#getMysqlUrl", function() {
+
+  })
+
+  describe("#getPostgresqlUrl", function() {
+
+
+  })
+
+  describe("#getRedisUrl", function() {
+
+
+  })
+
+  describe("#getSolrUrl", function() {
+
+
+  })
 
 
 })

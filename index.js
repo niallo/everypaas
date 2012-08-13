@@ -11,9 +11,10 @@ function EveryPaaS(options) {
 }
 
 EveryPaaS.prototype.detect = function(env, dcf) {
-  env = env || process.env
+  var env = env || process.env
   var dotCloudFilename = dcf || "/home/dotcloud/environment.json"
   this.paas = this.NONE
+  this.herokuEnvironment = undefined
   try {
     this.getDotCloud(dotCloudFilename)
     this.paas = this.DOTCLOUD
@@ -25,6 +26,7 @@ EveryPaaS.prototype.detect = function(env, dcf) {
       return this.paas
     }
     if (this.isStrider(env)) {
+      this.striderEnvironment = env
       this.paas = this.STRIDER
       return this.paas
     }
@@ -37,8 +39,9 @@ EveryPaaS.prototype.detect = function(env, dcf) {
 }
 
 EveryPaaS.prototype.isHeroku = function (env) {
+  var env = env || this.herokuEnvironment
 
-  return (env.PORT !== undefined && env.PAAS_NAME !== "strider")
+  return (env && (env.PORT !== undefined && env.PAAS_NAME !== "strider"))
 }
 
 EveryPaaS.prototype.getDotCloud = function(filename) {
@@ -61,9 +64,43 @@ EveryPaaS.prototype.isNodejitsu = function() {
 }
 
 EveryPaaS.prototype.isStrider = function(env) {
+  var env = env || this.striderEnvironment
 
   return (env.PAAS_NAME !== undefined
     && env.PAAS_NAME.toLowerCase() === "strider")
+}
+
+EveryPaaS.prototype.getMongodbUrl = function() {
+
+  if (this.isDotCloud()) {
+    return getDotCloudVar(this.dotCloudEnvironment, "MONGODB_URL")
+  }
+
+  if (this.isHeroku()) {
+    if (this.herokuEnvironment.MONGOLAB_URL)
+      return this.herokuEnvironment.MONGOLAB_URL
+    if (this.herokuEnvironment.MONGOHQ_URL)
+      return this.herokuEnvironment.MONGOHQ_URL
+    return null
+  }
+
+  if (this.isStrider()) {
+    if (this.striderEnvironment.MONGODB_URL)
+      return this.striderEnvironment.MONGODB_URL
+  }
+
+
+}
+
+function getDotCloudVar(dotCloudEnvironment, key) {
+  for (var k in dotCloudEnvironment) {
+    if (k.indexOf("DOTCLOUD_") === 0
+      && k.lastIndexOf(key) !== -1) {
+        return dotCloudEnvironment[k]
+    }
+  }
+
+  return null
 }
 
 // Run detection when module loaded.
