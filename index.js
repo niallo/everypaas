@@ -10,11 +10,13 @@ function EveryPaaS(options) {
   this.detect()
 }
 
-EveryPaaS.prototype.detect = function(env, dotCloudFilename) {
-  var env = env || process.env
-  var dotCloudFilename = dotCloudFilename || "/home/dotcloud/environment.json"
+EveryPaaS.prototype.detect = function(env, dcf) {
+  env = env || process.env
+  var dotCloudFilename = dcf || "/home/dotcloud/environment.json"
+  this.paas = this.NONE
   try {
-    this.getDotCloud()
+    this.getDotCloud(dotCloudFilename)
+    this.paas = this.DOTCLOUD
     return this.paas
   } catch(e) {
     if (this.isHeroku(env)) {
@@ -30,6 +32,7 @@ EveryPaaS.prototype.detect = function(env, dotCloudFilename) {
       this.paas = this.NODEJITSU
       return this.paas
     }
+    return this.paas
   }
 }
 
@@ -49,7 +52,7 @@ EveryPaaS.prototype.getDotCloud = function(filename) {
   }
 }
 
-EveryPaaS.prototype.isDotcloud = function() {
+EveryPaaS.prototype.isDotCloud = function() {
   return (this.dotCloudEnvironment !== undefined)
 }
 
