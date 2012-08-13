@@ -128,4 +128,4 @@ function getDotCloudVar(dotCloudEnvironment, key) {
 // Run detection when module loaded.
 var ep = new EveryPaaS()
 
-module.exports = ep;
+module.exports = ep
