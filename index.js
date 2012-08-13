@@ -81,7 +81,6 @@ EveryPaaS.prototype.getMongodbUrl = function() {
       return this.herokuEnvironment.MONGOLAB_URL
     if (this.herokuEnvironment.MONGOHQ_URL)
       return this.herokuEnvironment.MONGOHQ_URL
-    return null
   }
 
   if (this.isStrider()) {
@@ -89,7 +88,7 @@ EveryPaaS.prototype.getMongodbUrl = function() {
       return this.striderEnvironment.MONGODB_URL
   }
 
-
+  return null
 }
 
 EveryPaaS.prototype.getMysqlUrl = function() {
@@ -111,7 +110,7 @@ EveryPaaS.prototype.getMysqlUrl = function() {
       return this.striderEnvironment.MYSQL_URL
   }
 
-
+  return null
 }
 
 function getDotCloudVar(dotCloudEnvironment, key) {
