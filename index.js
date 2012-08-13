@@ -38,7 +38,7 @@ EveryPaaS.prototype.detect = function(env, dcf) {
 
 EveryPaaS.prototype.isHeroku = function (env) {
 
-  return (env.PORT !== undefined)
+  return (env.PORT !== undefined && env.PAAS_NAME !== "strider")
 }
 
 EveryPaaS.prototype.getDotCloud = function(filename) {

@@ -44,12 +44,52 @@ describe("everypaas", function() {
       expect(r).to.eql(everypaas.DOTCLOUD)
     })
 
-    it("should not detect dotCloud if invalid environment.json", function() {
+    it("should not detect dotCloud if non-existant environment.json", function() {
       var r = everypaas.detect(process.env, path.join(__dirname, 'dotcloud-env-nonexistant.json'))
       expect(everypaas.isDotCloud()).to.be.false
       expect(everypaas.paas).to.eql(everypaas.NONE)
       expect(r).to.eql(everypaas.NONE)
     })
+
+    it("should not detect dotCloud if invalid environment.json", function() {
+      var r = everypaas.detect(process.env, path.join(__dirname, 'dotcloud-env-bad.json'))
+      expect(everypaas.isDotCloud()).to.be.false
+      expect(everypaas.paas).to.eql(everypaas.NONE)
+      expect(r).to.eql(everypaas.NONE)
+    })
+
+  })
+
+  describe("#detect", function() {
+
+    beforeEach(function() {
+      everypaas.dotCloudEnvironment = undefined
+    })
+
+    it("should set `paas` property to NONE when no PaaS found", function() {
+      var r = everypaas.detect({}, path.join(__dirname, 'dotcloud-env-nonexistant.json'))
+      expect(everypaas.paas).to.eql(everypaas.NONE)
+      expect(r).to.eql(everypaas.NONE)
+    })
+
+    it("should set `paas` property to HEROKU when Heroku found", function() {
+      var r = everypaas.detect({"PORT":123}, path.join(__dirname, 'dotcloud-env-nonexistant.json'))
+      expect(everypaas.paas).to.eql(everypaas.HEROKU)
+      expect(r).to.eql(everypaas.HEROKU)
+    })
+
+    it("should set `paas` property to DOTCLOUD when dotCloud found", function() {
+      var r = everypaas.detect({"PORT":123, "PAAS_NAME":"strider"}, path.join(__dirname, 'dotcloud-env-good.json'))
+      expect(everypaas.paas).to.eql(everypaas.DOTCLOUD)
+      expect(r).to.eql(everypaas.DOTCLOUD)
+    })
+
+    it("should set `paas` property to STRIDER when Strider found", function() {
+      var r = everypaas.detect({"PORT":123, "PAAS_NAME":"strider"}, path.join(__dirname, 'dotcloud-env-bad.json'))
+      expect(everypaas.paas).to.eql(everypaas.STRIDER)
+      expect(r).to.eql(everypaas.STRIDER)
+    })
+
   })
 
 
