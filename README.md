@@ -106,4 +106,6 @@ Complete API
 environment. This can be useful to retrieve custom confuration variables or if
 you have multiple instances of the same service.
 
+`everypaas.striderEnvironment` - Contains the full Strider configuration
+environment.
 
