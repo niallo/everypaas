@@ -1,6 +1,6 @@
 var fs = require('fs')
 
-function EveryPaaS(options) {
+function EveryPaaS() {
   this.DOTCLOUD = "dotcloud"
   this.HEROKU = "heroku"
   this.NODEJITSU = "nodejitsu"
