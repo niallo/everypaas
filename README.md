@@ -111,7 +111,7 @@ environment.
 
 
 Tests
-=====
+-----
 
 EveryPaaS has a comprehensive test suite. This can be executed by running `npm test` in the project root.
 
