@@ -13,16 +13,18 @@ EveryPaaS detects which environment your app is running in and abstracts away
 the details of how to connect to external resources.
 
 If you write your app with EveryPaaS, you will be able to seamlessly run it on
-your dev box and any of a number of platform providers.
+your dev box and any of a number of platform providers - without changing a
+single line of code!
 
 Supported Platforms
 -------------------
 
 * Heroku
-* dotCloud
 * Nodejitsu
-* Travis CI
 * Strider
+* Travis CI
+* dotCloud
+* Your dev box
 
 Supported Services
 ------------------
@@ -42,5 +44,49 @@ Supported Services
   - including Web Solr in Heroku Marketplace
 
 
+Installation
+------------
+
+EveryPaaS is available in NPM. Simply type `npm install everypaas` to install
+it.
+
+Usage
+-----
+
+EveryPaaS has a very simple API. When you require EveryPaaS, it will detect
+which environment it is running in.
+
+Example:
+
+```
+var everypaas = require('everypaas')
+
+var mongodbUrl = everypaas.getMongodbUrl()
+```
+
+Complete API
+------------
+
+***Functions***
+
+**MongoDB**
+
+`everypaas.getMongodbUrl()` - Returns the URL for the 
+
+**MySQL**
+
+
+***Properties***
+
+`everypaas.paas` - Value is one of:
+
+  - `everypaas.HEROKU` (Heroku)
+  - `everypaas.DOTCLOUD` (dotCloud)
+  - 
+
+`everypaas.herokuEnvironment` - Contains the full Heroku configuration environment.
+
+`everypaas.dotCloudEnvironment` - Contains the full dotCloud configuration environment. This can be useful to retrieve custom confuration variables
+or if you have multiple database services
 
 
