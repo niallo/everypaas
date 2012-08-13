@@ -16,7 +16,7 @@
     "chai": "~1.1.1"
   },
   "scripts": {
-    "test": "mocha -R tap"
+    "test": "./node_modules/mocha/bin/mocha -R tap"
   },
   "optionalDependencies": {},
   "engines": {
