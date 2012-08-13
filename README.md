@@ -12,9 +12,9 @@ app best practices.
 EveryPaaS detects which environment your app is running in and abstracts away
 the details of how to connect to external resources.
 
-If you write your app with EveryPaaS, you will be able to seamlessly run it on
-your dev box and any of a number of platform providers - without changing a
-single line of code!
+If you write your app with EveryPaaS, you and your users will be able to
+seamlessly run it on your dev box and any of a number of platform providers -
+without changing a single line of code!
 
 Supported Platforms
 -------------------
