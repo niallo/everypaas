@@ -109,3 +109,9 @@ you have multiple instances of the same service.
 `everypaas.striderEnvironment` - Contains the full Strider configuration
 environment.
 
+
+Tests
+=====
+
+EveryPaaS has a comprehensive test suite. This can be executed by running `npm test` in the project root.
+
