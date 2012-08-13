@@ -92,6 +92,28 @@ EveryPaaS.prototype.getMongodbUrl = function() {
 
 }
 
+EveryPaaS.prototype.getMysqlUrl = function() {
+
+  if (this.isDotCloud()) {
+    return getDotCloudVar(this.dotCloudEnvironment, "MYSQL_URL")
+  }
+
+  if (this.isHeroku()) {
+    if (this.herokuEnvironment.CLEARDB_DATABASE_URL)
+      return this.herokuEnvironment.CLEARDB_DATABASE_URL
+    if (this.herokuEnvironment.XEROUND_DATABASE_INTERNAL_URL)
+      return this.herokuEnvironment.XEROUND_DATABASE_INTERNAL_URL
+    return null
+  }
+
+  if (this.isStrider()) {
+    if (this.striderEnvironment.MYSQL_URL)
+      return this.striderEnvironment.MYSQL_URL
+  }
+
+
+}
+
 function getDotCloudVar(dotCloudEnvironment, key) {
   for (var k in dotCloudEnvironment) {
     if (k.indexOf("DOTCLOUD_") === 0

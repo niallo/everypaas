@@ -166,6 +166,72 @@ describe("everypaas", function() {
   })
 
   describe("#getMysqlUrl", function() {
+    describe("#on dotCloud", function() {
+      // Reset dotCloud cache
+      beforeEach(function() {
+        everypaas.dotCloudEnvironment = undefined
+      })
+
+      it("should return correct URL", function() {
+        everypaas.detect({}, path.join(__dirname, 'dotcloud-env-good.json'))
+        // Set a valid MySQL service named "db"
+        var url = "mysql://valid/"
+        everypaas.dotCloudEnvironment.DOTCLOUD_DB_MYSQL_URL = url
+        expect(everypaas.getMysqlUrl()).to.eql(url)
+        // now unset and set another service named "data"
+        delete everypaas.dotCloudEnvironment['DOTCLOUD_DB_MYSQL_URL']
+        everypaas.dotCloudEnvironment.DOTCLOUD_DATA_MYSQL_URL = url
+        expect(everypaas.getMysqlUrl()).to.eql(url)
+
+      })
+      it("should fail when service not configured", function() {
+        // no MySQL service
+        everypaas.detect({}, path.join(__dirname, 'dotcloud-env-good.json'))
+        expect(everypaas.getMysqlUrl()).to.not.exist;
+      })
+
+      after(function() {
+        delete everypaas.dotCloudEnvironment
+      })
+
+    })
+    describe("#on Heroku", function() {
+      it("should return correct URL for ClearDB MySQL", function() {
+        var url = "mysql://valid/"
+        everypaas.detect({PORT:123, "CLEARDB_DATABASE_URL":url})
+        expect(everypaas.paas).to.eql(everypaas.HEROKU)
+        expect(everypaas.getMysqlUrl()).to.eql(url)
+      })
+      it("should return correct URL for Xeround MySQL", function() {
+        var url = "mysql://valid/"
+        everypaas.detect({PORT:123, "XEROUND_DATABASE_INTERNAL_URL":url})
+        expect(everypaas.paas).to.eql(everypaas.HEROKU)
+        expect(everypaas.getMysqlUrl()).to.eql(url)
+      })
+      it("should fail when service not configured", function() {
+        // no MySQL service
+        everypaas.detect({PORT:123, "NONE":"foo"})
+        expect(everypaas.getMysqlUrl()).to.not.exist;
+      })
+
+    })
+
+    describe("#on Strider", function() {
+      it("should return correct URL for MySQL", function() {
+        var url = "mysql://valid/"
+        everypaas.detect({PAAS_NAME:"strider", "MYSQL_URL":url})
+        expect(everypaas.paas).to.eql(everypaas.STRIDER)
+        expect(everypaas.getMysqlUrl()).to.eql(url)
+      })
+
+      it("should fail when service not configured", function() {
+        // no MySQL service
+        everypaas.detect({PAAS_NAME:"strider", "NONE":"foo"})
+        expect(everypaas.getMysqlUrl()).to.not.exist;
+      })
+
+    })
+
 
   })
 
