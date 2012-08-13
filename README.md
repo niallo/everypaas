@@ -77,6 +77,17 @@ Complete API
 
 `everypaas.getMongodbUrl()` - Returns the URL for the MySQL service. On Heroku, this will work with both ClearDB and Xeround add-ons.
 
+**PostgreSQL**
+
+`everypaas.getPostgresqlUrl()` - Returns the URL for the PostgreSQL service.
+
+**Redis**
+
+`everypaas.getRedisUrl()` - Returns the URL for the Redis service. On Heroku, this will work with both Redis To Go and Open Redis add-ons.
+
+**Solr**
+
+`everypaas.getRedisUrl()` - Returns the URL for the Solr service. On Heroku, this will work with the Web Solr add-on.
 
 ***Properties***
 
