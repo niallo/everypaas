@@ -71,22 +71,28 @@ Complete API
 
 **MongoDB**
 
-`everypaas.getMongodbUrl()` - Returns the URL for the 
+`everypaas.getMongodbUrl()` - Returns the URL for the MongoDB service. On Heroku, this will work with both MongoLab and MongoHQ add-ons.
 
 **MySQL**
+
+`everypaas.getMongodbUrl()` - Returns the URL for the MySQL service. On Heroku, this will work with both ClearDB and Xeround add-ons.
 
 
 ***Properties***
 
-`everypaas.paas` - Value is one of:
+`everypaas.paas` - The detected platform. Value is one of:
 
   - `everypaas.HEROKU` (Heroku)
   - `everypaas.DOTCLOUD` (dotCloud)
-  - 
+  - `everypaas.STRIDER` (Strider)
+  - `everypaas.TRAVIS` (Travis)
+  - `everypaas.NODEJITSU` (Nodejitsu)
+  - `everypaas.NONE` (dev box / unknown)
 
 `everypaas.herokuEnvironment` - Contains the full Heroku configuration environment.
 
-`everypaas.dotCloudEnvironment` - Contains the full dotCloud configuration environment. This can be useful to retrieve custom confuration variables
-or if you have multiple database services
+`everypaas.dotCloudEnvironment` - Contains the full dotCloud configuration
+environment. This can be useful to retrieve custom confuration variables or if
+you have multiple instances of the same service.
 
 
