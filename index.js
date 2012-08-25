@@ -67,7 +67,7 @@ EveryPaaS.prototype.isNodejitsu = function() {
 EveryPaaS.prototype.isStrider = function(env) {
   var env = env || this.striderEnvironment
 
-  return (env.PAAS_NAME !== undefined
+  return (env && env.PAAS_NAME !== undefined
     && env.PAAS_NAME.toLowerCase() === "strider")
 }
 
