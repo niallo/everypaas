@@ -4,6 +4,11 @@ var expect = require('chai').expect,
 
 describe("everypaas", function() {
 
+  before(function() {
+    // clear process environment
+    process.env = {}
+  })
+
   describe("#isHeroku", function() {
     it("should detect Heroku if PORT variable set", function() {
       var r = everypaas.isHeroku({PORT:123})
