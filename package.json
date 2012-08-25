@@ -2,7 +2,7 @@
   "author": "Niall O'Higgins <contact@niallo.me> (twitter.com/niallohiggins)",
   "name": "everypaas",
   "description": "Easily run your app on any PaaS such as Heroku, dotCloud, Nodejitsu",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "homepage": "https://github.com/niallo/everypaas",
   "repository": {
     "url": "https://github.com/niallo/everypaas"
