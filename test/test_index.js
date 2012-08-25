@@ -133,7 +133,7 @@ describe("everypaas", function() {
     describe("#on Heroku", function() {
       it("should return correct URL for MongoLab", function() {
         var url = "mongodb://valid/"
-        everypaas.detect({PORT:123, "MONGOLAB_URL":url})
+        everypaas.detect({PORT:123, "MONGOLAB_URI":url})
         expect(everypaas.paas).to.eql(everypaas.HEROKU)
         expect(everypaas.getMongodbUrl()).to.eql(url)
       })

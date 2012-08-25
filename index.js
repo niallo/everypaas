@@ -78,8 +78,8 @@ EveryPaaS.prototype.getMongodbUrl = function() {
   }
 
   if (this.isHeroku()) {
-    if (this.herokuEnvironment.MONGOLAB_URL)
-      return this.herokuEnvironment.MONGOLAB_URL
+    if (this.herokuEnvironment.MONGOLAB_URI)
+      return this.herokuEnvironment.MONGOLAB_URI
     if (this.herokuEnvironment.MONGOHQ_URL)
       return this.herokuEnvironment.MONGOHQ_URL
     return null
