@@ -15,6 +15,7 @@ EveryPaaS.prototype.detect = function(env, dcf) {
   var dotCloudFilename = dcf || "/home/dotcloud/environment.json"
   this.paas = this.NONE
   this.herokuEnvironment = undefined
+  this.striderEnvironment = undefined
   try {
     this.getDotCloud(dotCloudFilename)
     this.paas = this.DOTCLOUD
