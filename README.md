@@ -61,7 +61,7 @@ which environment it is running in.
 
 Example:
 
-```
+```javascript
 var everypaas = require('everypaas')
 
 var mongodbUrl = everypaas.getMongodbUrl()
@@ -94,7 +94,24 @@ Complete API
 
 **SMTP**
 
-`everypaas.getSMTP()` - Returns an argument which can be applied to [nodemailer](https://github.com/andris9/Nodemailer) module `createTransport` function.
+`everypaas.getSMTP()` - Returns an argument which can be applied to [nodemailer](https://github.com/andris9/Nodemailer) module `createTransport` function. On Heroku, this will work with both Mailgun and SendGrid add-ons. Example:
+
+```javascript
+var everypaas = require('everypaas')
+var nodemailer = require('nodemailer')
+
+var transport = nodemailer.createTransport.apply(everypaas.getSMTP())
+transport.sendMail({
+    from: "foo@example.com", // sender address
+    to: "bar@example.com", // list of receivers
+    subject: "EveryPaaS", // Subject line
+    text: "NOMP stack FTW", // plaintext body_template
+    html: "<html><body>NOMP stack FTW</body></html>" // html body
+  }, function(err, response) {
+    // handle success / failure
+  })
+
+```
 
 ***Properties***
 
