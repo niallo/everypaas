@@ -78,7 +78,7 @@ Complete API
 
 **MySQL**
 
-`everypaas.getMySqlUrl()` - Returns the URL for the MySQL service. On Heroku, this will work with both ClearDB and Xeround add-ons.
+`everypaas.getMysqlUrl()` - Returns the URL for the MySQL service. On Heroku, this will work with both ClearDB and Xeround add-ons.
 
 **PostgreSQL**
 
