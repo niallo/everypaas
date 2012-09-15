@@ -43,6 +43,9 @@ Supported Services
 * Solr - `everypaas.getSolrUrl()`
   - including Web Solr in Heroku Marketplace
 
+* SMTP - `everypaas.getSMTP()`
+  - including SendGrid and Mailgun in Heroku Marketplace
+
 
 Installation
 ------------
@@ -88,6 +91,10 @@ Complete API
 **Solr**
 
 `everypaas.getRedisUrl()` - Returns the URL for the Solr service. On Heroku, this will work with the Web Solr add-on.
+
+**SMTP**
+
+`everypaas.getSMTP()` - Returns an argument which can be applied to [nodemailer](https://github.com/andris9/Nodemailer) module `createTransport` function.
 
 ***Properties***
 

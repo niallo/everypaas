@@ -94,6 +94,39 @@ EveryPaaS.prototype.getMongodbUrl = function() {
   return null
 }
 
+//
+// ## Return an argument list which can be applied to nodemailer's createTransport function
+// 
+EveryPaaS.prototype.getSMTP = function() {
+
+  if (this.isHeroku()) {
+    var res = {}
+    if (this.herokuEnvironment.SENDGRID_USERNAME && this.herokuEnvironment.SENDGRID_PASSWORD) {
+      return ["SMTP",{
+        service: "SendGrid",
+        auth: {
+          user: this.herokuEnvironment.SENDGRID_USERNAME,
+          pass: this.herokuEnvironment.SENDGRID_PASSWORD
+        }
+      }]
+    }
+
+    if (this.herokuEnvironment.MAILGUN_SMTP_SERVER) {
+      return ["SMTP",{
+        host:this.herokuEnvironment.MAILGUN_SMTP_SERVER,
+        port:parseInt(this.herokuEnvironment.MAILGUN_SMTP_PORT),
+        auth: {
+          user: this.herokuEnvironment.MAILGUN_SMTP_LOGIN,
+          pass: this.herokuEnvironment.MAILGUN_SMTP_PASSWORD
+        }
+      }]
+    }
+
+    return null
+  }
+  return null
+}
+
 EveryPaaS.prototype.getMysqlUrl = function() {
 
   if (this.isDotCloud()) {

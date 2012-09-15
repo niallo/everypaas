@@ -240,6 +240,56 @@ describe("everypaas", function() {
 
   })
 
+  describe("#getSMTP", function() {
+
+    describe("#on Heroku", function() {
+      it("should return correct transport for SendGrid", function() {
+        var sgusername = "foobar"
+        var sgpassword = "boff"
+        everypaas.detect({PORT:123, SENDGRID_USERNAME:sgusername, SENDGRID_PASSWORD: sgpassword})
+        expect(everypaas.paas).to.eql(everypaas.HEROKU)
+        expect(everypaas.getSMTP()).to.eql(["SMTP", {
+          service: "SendGrid",
+          auth: {
+            user: sgusername,
+            pass: sgpassword
+          }
+        }])
+      })
+
+      it("should return correct transport for Mailgun", function() {
+        var mgusername = "foobar"
+        var mgpassword = "boff"
+        var mgport = "587"
+        var mghost = "mailgun.example.com"
+        everypaas.detect({PORT:123,
+            MAILGUN_SMTP_LOGIN:mgusername,
+            MAILGUN_SMTP_PASSWORD: mgpassword,
+            MAILGUN_SMTP_PORT: mgport,
+            MAILGUN_SMTP_SERVER: mghost
+        })
+        expect(everypaas.paas).to.eql(everypaas.HEROKU)
+        expect(everypaas.getSMTP()).to.eql(["SMTP", {
+          host:mghost,
+          port:parseInt(mgport),
+          auth: {
+            user: mgusername,
+            pass: mgpassword
+          }
+        }])
+
+      })
+
+      it("should fail when SMTP not configured", function() {
+        // no SMTP service
+        everypaas.detect({PORT:123, "NONE":"foo"})
+        expect(everypaas.getSMTP()).to.not.exist;
+      })
+
+    })
+
+  })
+
   describe("#getPostgresqlUrl", function() {
 
 
