@@ -100,7 +100,7 @@ Complete API
 var everypaas = require('everypaas')
 var nodemailer = require('nodemailer')
 
-var transport = nodemailer.createTransport.apply(everypaas.getSMTP())
+var transport = nodemailer.createTransport.apply(null, everypaas.getSMTP())
 transport.sendMail({
     from: "foo@example.com", // sender address
     to: "bar@example.com", // list of receivers
