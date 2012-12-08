@@ -296,7 +296,73 @@ describe("everypaas", function() {
   })
 
   describe("#getRedisUrl", function() {
+    describe("#on dotCloud", function() {
+      // Reset dotCloud cache
+      beforeEach(function() {
+        everypaas.dotCloudEnvironment = undefined
+      })
 
+      it("should return correct URL", function() {
+        everypaas.detect({}, path.join(__dirname, 'dotcloud-env-good.json'))
+        // Set a valid Redis service named "db"
+        var url = "redis://root:password@host:1234"
+        everypaas.dotCloudEnvironment.DOTCLOUD_DB_REDIS_URL = url
+        expect(everypaas.getRedisUrl()).to.eql(url)
+        // now unset and set another service named "data"
+        delete everypaas.dotCloudEnvironment['DOTCLOUD_DB_REDIS_URL']
+        everypaas.dotCloudEnvironment.DOTCLOUD_DATA_REDIS_URL = url
+        expect(everypaas.getRedisUrl()).to.eql(url)
+
+      })
+      it("should fail when service not configured", function() {
+        // no Redis service
+        everypaas.detect({}, path.join(__dirname, 'dotcloud-env-good.json'))
+        expect(everypaas.getRedisUrl()).to.not.exist;
+      })
+
+      after(function() {
+        delete everypaas.dotCloudEnvironment
+      })
+
+    })
+    describe("#on Heroku", function() {
+      it("should return correct URL for Redis To Go add-on", function() {
+        var url = "redis://root:password@host:1234"
+        everypaas.detect({PORT:123, "REDISTOGO_URL":url})
+        expect(everypaas.paas).to.eql(everypaas.HEROKU)
+        expect(everypaas.getRedisUrl()).to.eql(url)
+      })
+      it("should return correct URL for OpenRedis add-on", function() {
+        var url = "redis://root:password@host:1234"
+        everypaas.detect({PORT:123, "OPENREDIS_URL":url})
+        expect(everypaas.paas).to.eql(everypaas.HEROKU)
+        expect(everypaas.getRedisUrl()).to.eql(url)
+      })
+      it("should fail when service not configured", function() {
+        // no Redis service
+        everypaas.detect({PORT:123, "NONE":"foo"})
+        expect(everypaas.getRedisUrl()).to.not.exist;
+      })
+
+    })
+
+    describe("#on Strider", function() {
+      it("should return correct URL for Redis", function() {
+        var url = "redis://root:password@host:1234"
+        var parsedUrl = require('url').parse(url)
+        everypaas.detect({PAAS_NAME:"strider", "REDIS_HOST": parsedUrl.hostname,
+          "REDIS_PORT": parsedUrl.port, "REDIS_PASSWORD": parsedUrl.auth.split(':')[1]})
+        expect(everypaas.paas).to.eql(everypaas.STRIDER)
+        expect(everypaas.getRedisUrl()).to.eql(url)
+      })
+
+      it("should fail when service not configured", function() {
+        // no Redis service
+        everypaas.detect({PAAS_NAME:"strider", "NONE":"foo"})
+        expect(everypaas.getRedisUrl()).to.not.exist;
+      })
+
+    })
 
   })
 

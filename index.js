@@ -150,6 +150,30 @@ EveryPaaS.prototype.getMysqlUrl = function() {
   return null
 }
 
+EveryPaaS.prototype.getRedisUrl = function() {
+  if (this.isDotCloud()) {
+    return getDotCloudVar(this.dotCloudEnvironment, "REDIS_URL")
+  }
+
+  if (this.isHeroku()) {
+    if (this.herokuEnvironment.REDISTOGO_URL)
+      return this.herokuEnvironment.REDISTOGO_URL
+    if (this.herokuEnvironment.OPENREDIS_URL)
+      return this.herokuEnvironment.OPENREDIS_URL
+    return null
+  }
+
+  if (this.isStrider()) {
+    if (this.striderEnvironment.REDIS_HOST) {
+      return 'redis://root:' + this.striderEnvironment.REDIS_PASSWORD + '@' +
+        this.striderEnvironment.REDIS_HOST + ':' + this.striderEnvironment.REDIS_PORT
+    }
+    return null
+  }
+
+  return null
+}
+
 function getDotCloudVar(dotCloudEnvironment, key) {
   for (var k in dotCloudEnvironment) {
     if (k.indexOf("DOTCLOUD_") === 0
