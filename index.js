@@ -42,7 +42,7 @@ EveryPaaS.prototype.detect = function(env, dcf) {
 EveryPaaS.prototype.isHeroku = function (env) {
   var env = env || this.herokuEnvironment
 
-  return (env && (env.PORT !== undefined && env.PAAS_NAME !== "strider"))
+  return (env && (env.DYNO !== undefined && env.PAAS_NAME !== "strider"))
 }
 
 EveryPaaS.prototype.getDotCloud = function(filename) {
@@ -96,7 +96,7 @@ EveryPaaS.prototype.getMongodbUrl = function() {
 
 //
 // ## Return an argument list which can be applied to nodemailer's createTransport function
-// 
+//
 EveryPaaS.prototype.getSMTP = function() {
 
   if (this.isHeroku()) {
